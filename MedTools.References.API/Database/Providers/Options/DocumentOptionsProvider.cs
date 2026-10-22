@@ -3,12 +3,12 @@
 using MedTools.References.API.Database.DbEntities;
 using MedTools.References.API.Common.Models.Responces;
 
-namespace MedTools.References.API.Database.Providers;
+namespace MedTools.References.API.Database.Providers.Options;
 
-public sealed class DocumentReferenceDataProvider(
-    MedToolsReferenceDbContext dbContext)
+public sealed class DocumentOptionsProvider(
+    MedicalReferenceDbContext dbContext)
 {
-    public async Task<IReadOnlyCollection<FilterOptionsDto>> GetInsurancePolicyTypesAsync(
+    public async Task<IReadOnlyCollection<FilterOptionsDto>> GetInsurancePolicyTypeOptionsAsync(
         CancellationToken cancellationToken = default)
     {
         return await dbContext

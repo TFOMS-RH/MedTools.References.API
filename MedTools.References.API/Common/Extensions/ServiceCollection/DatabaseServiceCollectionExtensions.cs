@@ -2,8 +2,8 @@
 using Microsoft.EntityFrameworkCore;
 
 using MedTools.References.API.Database;
-using MedTools.References.API.Database.Providers;
 using MedTools.References.API.Common.Models.Options;
+using MedTools.References.API.Database.Providers.Options;
 
 namespace MedTools.References.API.Common.Extensions.ServiceCollection;
 
@@ -35,7 +35,7 @@ public static class DatabaseServiceCollectionExtensions
     private static void RegisterDbContext(
         IServiceCollection services)
     {
-        services.AddDbContext<MedToolsReferenceDbContext>((sp, dbContextOptionsBuilder) =>
+        services.AddDbContext<MedicalReferenceDbContext>((sp, dbContextOptionsBuilder) =>
         {
             var databaseOptions = sp.GetRequiredService<IOptions<DatabaseOptions>>().Value;
 
@@ -45,12 +45,18 @@ public static class DatabaseServiceCollectionExtensions
                 {
                     options.CommandTimeout(databaseOptions.CommandTimeoutInSeconds);
                 });
+
         });
     }
 
     private static void RegisterDataProviders(
         IServiceCollection services)
     {
-        services.AddScoped<DocumentReferenceDataProvider>();
+        services.AddScoped<DiseaseOptionsProvider>();
+        services.AddScoped<DocumentOptionsProvider>();
+        services.AddScoped<MedicalCareOptionsProvider>();
+        services.AddScoped<MedicalOrganizationOptionsProvider>();
+        services.AddScoped<MedicalServiceOptionsProvider>();
+        services.AddScoped<PaymentOptionsProvider>();
     }
 }

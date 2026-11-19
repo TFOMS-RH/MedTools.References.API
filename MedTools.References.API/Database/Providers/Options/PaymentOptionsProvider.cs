@@ -19,6 +19,7 @@ public sealed class PaymentOptionsProvider(
             .Select(x => new FilterOptionsDto(
                 Label: $"{x.ClinicalGroupId} — {x.ClinicalGroupName!}",
                 Value: x.ClinicalGroupId))
+            .Distinct()
             .Take(30)
             .ToListAsync(cancellationToken: cancellationToken);
     }
@@ -67,7 +68,7 @@ public sealed class PaymentOptionsProvider(
             .Where(x => x.RefusalReasonCodeName.Contains(searchString)
                 || x.RefusalReasonCodeId.ToString().StartsWith(searchString))
             .Select(x => new FilterOptionsDto(
-                Label: $"{x.RefusalReasonCodeId} — основание {x.RefusalReasonCodeName}",
+                Label: $"{x.RefusalReasonCodeId} : основание {x.RefusalReasonCodeName}",
                 Value: x.RefusalReasonCodeId.ToString()))
             .Distinct()
             .Take(30)

@@ -72,11 +72,14 @@ public sealed class MedicalCareOptionsProvider(
     {
         return await dbContext
             .Set<HighTechCareMethodDbEntity>()
-            .Where(x => x.HighTechCareMethodId != null
-                && x.HighTechCareMethodName.Contains(searchString))
+            .Where(
+                x => x.HighTechCareMethodId != null &&
+                (x.HighTechCareMethodId.Contains(searchString) ||
+                x.HighTechCareMethodName.Contains(searchString)))
             .Select(x => new FilterOptionsDto(
-                Label: x.HighTechCareMethodName,
+                Label: $"{x.HighTechCareMethodId!} : {x.HighTechCareMethodName}",
                 Value: x.HighTechCareMethodId!))
+            .Distinct()
             .Take(30)
             .ToListAsync(cancellationToken: cancellationToken);
     }
@@ -88,10 +91,9 @@ public sealed class MedicalCareOptionsProvider(
         return await dbContext
             .Set<HighTechCareTypeDbEntity>()
             .Where(x => x.HighTechCareTypeId != null
-                && x.HighTechCareTypeName != null
-                && x.HighTechCareTypeId.StartsWith(searchString))
+                && x.HighTechCareTypeId.Contains(searchString))
             .Select(x => new FilterOptionsDto(
-                Label: x.HighTechCareTypeName!,
+                Label: x.HighTechCareTypeId!,
                 Value: x.HighTechCareTypeId!))
             .Distinct()
             .Take(30)
@@ -130,8 +132,8 @@ public sealed class MedicalCareOptionsProvider(
         return await dbContext
             .Set<PhysicianSpecialtyDbEntity>()
             .Select(x => new FilterOptionsDto(
-                Label: x.SpecialityPostname == null || x.SpecialityPostname == string.Empty 
-                    ? x.SpecialityName 
+                Label: x.SpecialityPostname == null || x.SpecialityPostname == string.Empty
+                    ? x.SpecialityName
                     : $"{x.SpecialityName}" + " " + $"({x.SpecialityPostname})",
                 Value: x.SpecialityId))
             .ToListAsync(cancellationToken: cancellationToken);

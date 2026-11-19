@@ -16,9 +16,9 @@ public sealed class MedicalServiceOptionsProvider(
             .Set<DrugIdentifierDbEntity>()
             .Where(x => x.DrugIdentifierId != null
                 && x.DrugIdentifierName != null
-                && (x.DrugIdentifierName.Contains(searchString) || x.DrugIdentifierId.StartsWith(searchString)))
+                && (x.DrugIdentifierId.Contains(searchString)))
             .Select(x => new FilterOptionsDto(
-                Label: x.DrugIdentifierName!,
+                Label: x.DrugIdentifierId!,
                 Value: x.DrugIdentifierId!))
             .Distinct()
             .Take(30)
@@ -136,7 +136,7 @@ public sealed class MedicalServiceOptionsProvider(
             .Set<TherapyRegimenDbEntity>()
             .Where(x => x.TherapyRegimenId.Contains(searchString))
             .Select(x => new FilterOptionsDto(
-                Label: x.TherapyRegimenName!,
+                Label: x.TherapyRegimenId,
                 Value: x.TherapyRegimenId))
             .Distinct()
             .Take(30)

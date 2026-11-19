@@ -71,7 +71,7 @@ public sealed class DiseaseOptionsProvider(
                 && x.DiseaseName != null
                 && (x.DiseaseCode.Contains(searchString) || x.DiseaseName.Contains(searchString)))
             .Select(x => new FilterOptionsDto(
-                Label: x.DiseaseName!,
+                Label: $"{x.DiseaseCode!} : {x.DiseaseName!}",
                 Value: x.DiseaseCode!))
             .Take(30)
             .ToListAsync(cancellationToken: cancellationToken);
@@ -83,12 +83,12 @@ public sealed class DiseaseOptionsProvider(
     {
         return await dbContext
             .Set<DiseaseStageDbEntity>()
-            .Where(x => x.StageName != null 
-                && x.StageName != "Нет" 
+            .Where(x => x.StageName != null
+                && x.StageName != "Нет"
                 && x.StageName.Contains(searchString))
             .Select(x => new FilterOptionsDto(
                 Label: x.StageName!,
-                Value: x.StageId.ToString()))
+                Value: x.StageName!))
             .Distinct()
             .Take(30)
             .ToListAsync(cancellationToken: cancellationToken);

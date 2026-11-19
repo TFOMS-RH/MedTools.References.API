@@ -8,7 +8,7 @@ public static class ReferenceEndpoints
         this IEndpointRouteBuilder endpointRouteBuilder)
     {
         var group = endpointRouteBuilder
-            .MapGroup("/references")
+            .MapGroup("/medical-references")
             .WithTags("References");
 
         group.MapGet(

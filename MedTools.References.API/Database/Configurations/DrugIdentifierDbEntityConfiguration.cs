@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-
-using MedTools.References.API.Database.DbEntities;
+using MedTools.References.API.Database.Entities;
 
 namespace MedTools.References.API.Database.Configurations
 {

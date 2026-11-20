@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-
-using MedTools.References.API.Database.DbEntities;
+using MedTools.References.API.Database.Entities;
 
 namespace MedTools.References.API.Database.Configurations;
 
@@ -13,7 +12,7 @@ public sealed class InsuranceDbEntityConfiguration : IEntityTypeConfiguration<In
 
         builder.Property(prop => prop.Uid).HasColumnName("uid");
 
-        builder.Property(prop => prop.InsuranceCode).HasColumnName("SMOCOD");
-        builder.Property(prop => prop.InsuranceShortname).HasColumnName("NAM_SMOK");
+        builder.Property(prop => prop.Code).HasColumnName("SMOCOD");
+        builder.Property(prop => prop.Name).HasColumnName("NAM_SMOK");
     }
 }

@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-using MedTools.References.API.Database.DbEntities;
+using MedTools.References.API.Database.Entities;
 using MedTools.References.API.Common.Models.Responces;
 
 namespace MedTools.References.API.Database.Providers.Options;
@@ -14,6 +14,7 @@ public sealed class MedicalServiceOptionsProvider(
     {
         return await dbContext
             .Set<DrugIdentifierDbEntity>()
+            .AsNoTracking()
             .Where(x => x.DrugIdentifierId != null
                 && x.DrugIdentifierName != null
                 && (x.DrugIdentifierId.Contains(searchString)))
@@ -21,8 +22,9 @@ public sealed class MedicalServiceOptionsProvider(
                 Label: x.DrugIdentifierId!,
                 Value: x.DrugIdentifierId!))
             .Distinct()
+            .OrderBy(x => x.Value)
             .Take(30)
-            .ToListAsync(cancellationToken: cancellationToken);
+            .ToListAsync(cancellationToken);
     }
 
     public async Task<IReadOnlyCollection<FilterOptionsDto>> GetDrugTherapyCycleOptionsAsync(
@@ -30,11 +32,14 @@ public sealed class MedicalServiceOptionsProvider(
     {
         return await dbContext
             .Set<DrugTherapyCycleDbEntity>()
+            .AsNoTracking()
             .Where(x => x.DrugTherapyCycleName != null)
             .Select(x => new FilterOptionsDto(
                 Label: x.DrugTherapyCycleName!,
                 Value: x.DrugTherapyCycleId.ToString()))
-            .ToListAsync(cancellationToken: cancellationToken);
+            .Distinct()
+            .OrderBy(x => x.Value)
+            .ToListAsync(cancellationToken);
     }
 
     public async Task<IReadOnlyCollection<FilterOptionsDto>> GetDrugTherapyLineOptionsAsync(
@@ -42,11 +47,14 @@ public sealed class MedicalServiceOptionsProvider(
     {
         return await dbContext
             .Set<DrugTherapyLineDbEntity>()
+            .AsNoTracking()
             .Where(x => x.DrugTherapyLineName != null)
             .Select(x => new FilterOptionsDto(
                 Label: x.DrugTherapyLineName!,
                 Value: x.DrugTherapyLineId.ToString()))
-            .ToListAsync(cancellationToken: cancellationToken);
+            .Distinct()
+            .OrderBy(x => x.Value)
+            .ToListAsync(cancellationToken);
     }
 
     public async Task<IReadOnlyCollection<FilterOptionsDto>> GetMedicalServiceOptionsAsync(
@@ -55,13 +63,16 @@ public sealed class MedicalServiceOptionsProvider(
     {
         return await dbContext
             .Set<MedicalServiceDbEntity>()
+            .AsNoTracking()
             .Where(x => x.ServiceName != null
                 && (x.ServiceName.Contains(searchString) || x.ServiceCode.Contains(searchString)))
             .Select(x => new FilterOptionsDto(
                 Label: $"{x.ServiceCode} — {x.ServiceName}",
                 Value: x.ServiceId.ToString()))
+            .Distinct()
+            .OrderBy(x => x.Value)
             .Take(30)
-            .ToListAsync(cancellationToken: cancellationToken);
+            .ToListAsync(cancellationToken);
     }
 
     public async Task<IReadOnlyCollection<FilterOptionsDto>> GetOncologyServiceTypeOptionsAsync(
@@ -69,11 +80,14 @@ public sealed class MedicalServiceOptionsProvider(
     {
         return await dbContext
             .Set<OncologyServiceTypeDbEntity>()
+            .AsNoTracking()
             .Where(x => x.ServiceName != null)
             .Select(x => new FilterOptionsDto(
                 Label: x.ServiceName!,
                 Value: x.ServiceId.ToString()))
-            .ToListAsync(cancellationToken: cancellationToken);
+            .Distinct()
+            .OrderBy(x => x.Value)
+            .ToListAsync(cancellationToken);
     }
 
     public async Task<IReadOnlyCollection<FilterOptionsDto>> GetProvidedServiceOptionsAsync(
@@ -82,14 +96,17 @@ public sealed class MedicalServiceOptionsProvider(
     {
         return await dbContext
             .Set<ProvidedServiceDbEntity>()
+            .AsNoTracking()
             .Where(x => x.ProvidedServiceId != null
                 && x.ProvidedServiceName != null
                 && (x.ProvidedServiceId.Contains(searchString) || x.ProvidedServiceName.Contains(searchString)))
             .Select(x => new FilterOptionsDto(
                 Label: $"{x.ProvidedServiceId!} — {x.ProvidedServiceName!}",
                 Value: x.ProvidedServiceId!))
+            .Distinct()
+            .OrderBy(x => x.Value)
             .Take(30)
-            .ToListAsync(cancellationToken: cancellationToken);
+            .ToListAsync(cancellationToken);
     }
 
     public async Task<IReadOnlyCollection<FilterOptionsDto>> GetRadioTherapyTypeOptionsAsync(
@@ -97,11 +114,14 @@ public sealed class MedicalServiceOptionsProvider(
     {
         return await dbContext
             .Set<RadioTherapyTypeDbEntity>()
+            .AsNoTracking()
             .Where(x => x.RadioTherapyTypeName != null)
             .Select(x => new FilterOptionsDto(
                 Label: x.RadioTherapyTypeName!,
                 Value: x.RadioTherapyTypeId.ToString()))
-            .ToListAsync(cancellationToken: cancellationToken);
+            .Distinct()
+            .OrderBy(x => x.Value)
+            .ToListAsync(cancellationToken);
     }
 
     public async Task<IReadOnlyCollection<FilterOptionsDto>> GetReferralTypeOptionsAsync(
@@ -109,11 +129,14 @@ public sealed class MedicalServiceOptionsProvider(
     {
         return await dbContext
             .Set<ReferralTypeDbEntity>()
+            .AsNoTracking()
             .Where(x => x.ReferralName != null)
             .Select(x => new FilterOptionsDto(
                 Label: x.ReferralName!,
                 Value: x.ReferralId.ToString()))
-            .ToListAsync(cancellationToken: cancellationToken);
+            .Distinct()
+            .OrderBy(x => x.Value)
+            .ToListAsync(cancellationToken);
     }
 
     public async Task<IReadOnlyCollection<FilterOptionsDto>> GetSurgicalTreatmentTypeOptionsAsync(
@@ -121,11 +144,14 @@ public sealed class MedicalServiceOptionsProvider(
     {
         return await dbContext
             .Set<SurgicalTreatmentTypeDbEntity>()
+            .AsNoTracking()
             .Where(x => x.SurgicalTreatmentTypeName != null)
             .Select(x => new FilterOptionsDto(
                 Label: x.SurgicalTreatmentTypeName!,
                 Value: x.SurgicalTreatmentTypeId.ToString()))
-            .ToListAsync(cancellationToken: cancellationToken);
+            .Distinct()
+            .OrderBy(x => x.Value)
+            .ToListAsync(cancellationToken);
     }
 
     public async Task<IReadOnlyCollection<FilterOptionsDto>> GetTherapyRegimenOptionsAsync(
@@ -134,12 +160,14 @@ public sealed class MedicalServiceOptionsProvider(
     {
         return await dbContext
             .Set<TherapyRegimenDbEntity>()
+            .AsNoTracking()
             .Where(x => x.TherapyRegimenId.Contains(searchString))
             .Select(x => new FilterOptionsDto(
                 Label: x.TherapyRegimenId,
                 Value: x.TherapyRegimenId))
             .Distinct()
+            .OrderBy(x => x.Value)
             .Take(30)
-            .ToListAsync(cancellationToken: cancellationToken);
+            .ToListAsync(cancellationToken);
     }
 }

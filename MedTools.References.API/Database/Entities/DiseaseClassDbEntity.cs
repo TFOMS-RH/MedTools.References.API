@@ -1,4 +1,4 @@
-﻿namespace MedTools.References.API.Database.DbEntities;
+﻿namespace MedTools.References.API.Database.Entities;
 
 public sealed class DiseaseClassDbEntity
 {

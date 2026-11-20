@@ -2,6 +2,8 @@
 
 public static class ReferenceCodes
 {
+    public const string MedicalOrgs = "F032";
+    public const string InsuranceOrgs = "F002";
     public const string PolicyTypes = "F008";
     public const string MedicalCareProfiles = "V002";
     public const string BedProfiles = "V020";

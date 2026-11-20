@@ -1,6 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
-using MedTools.References.API.Database.DbEntities;
+using MedTools.References.API.Database.Entities;
 using MedTools.References.API.Common.Models.Responces;
 
 namespace MedTools.References.API.Database.Providers.Options;
@@ -13,9 +13,12 @@ public sealed class DocumentOptionsProvider(
     {
         return await dbContext
             .Set<InsurancePolicyTypeDbEntity>()
+            .AsNoTracking()
             .Select(x => new FilterOptionsDto(
                 Label: x.DocumentName,
                 Value: x.DocumentId))
-            .ToListAsync(cancellationToken: cancellationToken);
+            .Distinct()
+            .OrderBy(x => x.Value)
+            .ToListAsync(cancellationToken);
     }
 }

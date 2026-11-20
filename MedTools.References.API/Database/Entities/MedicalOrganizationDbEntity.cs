@@ -1,9 +1,9 @@
-﻿namespace MedTools.References.API.Database.DbEntities;
+﻿namespace MedTools.References.API.Database.Entities;
 
 public sealed class MedicalOrganizationDbEntity
 {
     public int Uid { get; set; }
 
-    public string? MedicalOrganizationCode { get; set; } 
-    public string? MedicalOrganizationShortname { get; set; }
+    public string? Code { get; set; } 
+    public string? Name { get; set; }
 }

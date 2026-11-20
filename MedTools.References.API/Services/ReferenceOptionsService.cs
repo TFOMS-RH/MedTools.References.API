@@ -19,6 +19,16 @@ public sealed class ReferenceOptionsService(
     {
         return code switch
         {
+            ReferenceCodes.MedicalOrgs => await medicalOrganizationOptionsProvider
+                .GetMedicalOrgOptionsAsync(
+                    cancellationToken,
+                    searchString ?? ""),
+
+            ReferenceCodes.InsuranceOrgs => await medicalOrganizationOptionsProvider
+                .GetInsuranceOrgOptionsAsync(
+                    cancellationToken,
+                    searchString ?? ""),
+
             ReferenceCodes.PolicyTypes => await documentReferenceDataProvider
                 .GetInsurancePolicyTypeOptionsAsync(
                     cancellationToken: cancellationToken),

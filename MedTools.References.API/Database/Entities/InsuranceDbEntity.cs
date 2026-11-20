@@ -1,10 +1,10 @@
-﻿namespace MedTools.References.API.Database.DbEntities;
+﻿namespace MedTools.References.API.Database.Entities;
 
 public sealed class InsuranceDbEntity
 {
     public int Uid { get; set; }
 
-    public string InsuranceCode { get; set; } = string.Empty;
-    public string InsuranceShortname { get; set; } = string.Empty;
+    public string Code { get; set; } = string.Empty;
+    public string Name { get; set; } = string.Empty;
 
 }

@@ -35,11 +35,13 @@ public sealed class MedicalServiceOptionsProvider(
             .Set<DrugTherapyCycleDbEntity>()
             .AsNoTracking()
             .Where(x => x.DrugTherapyCycleName != null)
+            .Select(x => new { x.DrugTherapyCycleId, x.DrugTherapyCycleName })
+            .Distinct()
+            .OrderBy(x => x.DrugTherapyCycleId)
+            .ThenBy(x => x.DrugTherapyCycleName)
             .Select(x => new FilterOptionsDto(
                 Label: x.DrugTherapyCycleName!,
                 Value: x.DrugTherapyCycleId.ToString()))
-            .Distinct()
-            .OrderBy(x => x.Value)
             .ToListAsync(cancellationToken);
     }
 
@@ -50,11 +52,13 @@ public sealed class MedicalServiceOptionsProvider(
             .Set<DrugTherapyLineDbEntity>()
             .AsNoTracking()
             .Where(x => x.DrugTherapyLineName != null)
+            .Select(x => new { x.DrugTherapyLineId, x.DrugTherapyLineName })
+            .Distinct()
+            .OrderBy(x => x.DrugTherapyLineId)
+            .ThenBy(x => x.DrugTherapyLineName)
             .Select(x => new FilterOptionsDto(
                 Label: x.DrugTherapyLineName!,
                 Value: x.DrugTherapyLineId.ToString()))
-            .Distinct()
-            .OrderBy(x => x.Value)
             .ToListAsync(cancellationToken);
     }
 
@@ -86,11 +90,13 @@ public sealed class MedicalServiceOptionsProvider(
             .Set<OncologyServiceTypeDbEntity>()
             .AsNoTracking()
             .Where(x => x.ServiceName != null)
+            .Select(x => new { x.ServiceId, x.ServiceName })
+            .Distinct()
+            .OrderBy(x => x.ServiceId)
+            .ThenBy(x => x.ServiceName)
             .Select(x => new FilterOptionsDto(
                 Label: x.ServiceName!,
                 Value: x.ServiceId.ToString()))
-            .Distinct()
-            .OrderBy(x => x.Value)
             .ToListAsync(cancellationToken);
     }
 
@@ -123,11 +129,13 @@ public sealed class MedicalServiceOptionsProvider(
             .Set<RadioTherapyTypeDbEntity>()
             .AsNoTracking()
             .Where(x => x.RadioTherapyTypeName != null)
+            .Select(x => new { x.RadioTherapyTypeId, x.RadioTherapyTypeName })
+            .Distinct()
+            .OrderBy(x => x.RadioTherapyTypeId)
+            .ThenBy(x => x.RadioTherapyTypeName)
             .Select(x => new FilterOptionsDto(
                 Label: x.RadioTherapyTypeName!,
                 Value: x.RadioTherapyTypeId.ToString()))
-            .Distinct()
-            .OrderBy(x => x.Value)
             .ToListAsync(cancellationToken);
     }
 
@@ -138,11 +146,13 @@ public sealed class MedicalServiceOptionsProvider(
             .Set<ReferralTypeDbEntity>()
             .AsNoTracking()
             .Where(x => x.ReferralName != null)
+            .Select(x => new { x.ReferralId, x.ReferralName })
+            .Distinct()
+            .OrderBy(x => x.ReferralId)
+            .ThenBy(x => x.ReferralName)
             .Select(x => new FilterOptionsDto(
                 Label: x.ReferralName!,
                 Value: x.ReferralId.ToString()))
-            .Distinct()
-            .OrderBy(x => x.Value)
             .ToListAsync(cancellationToken);
     }
 
@@ -153,11 +163,13 @@ public sealed class MedicalServiceOptionsProvider(
             .Set<SurgicalTreatmentTypeDbEntity>()
             .AsNoTracking()
             .Where(x => x.SurgicalTreatmentTypeName != null)
+            .Select(x => new { x.SurgicalTreatmentTypeId, x.SurgicalTreatmentTypeName })
+            .Distinct()
+            .OrderBy(x => x.SurgicalTreatmentTypeId)
+            .ThenBy(x => x.SurgicalTreatmentTypeName)
             .Select(x => new FilterOptionsDto(
                 Label: x.SurgicalTreatmentTypeName!,
                 Value: x.SurgicalTreatmentTypeId.ToString()))
-            .Distinct()
-            .OrderBy(x => x.Value)
             .ToListAsync(cancellationToken);
     }
 

@@ -15,11 +15,13 @@ public sealed class MedicalCareOptionsProvider(
         return await dbContext
             .Set<MedicalCareProfileDbEntity>()
             .AsNoTracking()
+            .Select(x => new { x.ProfileId, x.ProfileName })
+            .Distinct()
+            .OrderBy(x => x.ProfileId)
+            .ThenBy(x => x.ProfileName)
             .Select(x => new FilterOptionsDto(
                 Label: x.ProfileName,
                 Value: x.ProfileId.ToString()))
-            .Distinct()
-            .OrderBy(x => x.Value)
             .ToListAsync(cancellationToken);
     }
 
@@ -29,11 +31,13 @@ public sealed class MedicalCareOptionsProvider(
         return await dbContext
             .Set<BedProfileDbEntity>()
             .AsNoTracking()
+            .Select(x => new { x.BedProfileId, x.BedProfileName })
+            .Distinct()
+            .OrderBy(x => x.BedProfileId)
+            .ThenBy(x => x.BedProfileName)
             .Select(x => new FilterOptionsDto(
                 Label: x.BedProfileName,
                 Value: x.BedProfileId))
-            .Distinct()
-            .OrderBy(x => x.Value)
             .ToListAsync(cancellationToken);
     }
 
@@ -43,11 +47,13 @@ public sealed class MedicalCareOptionsProvider(
         return await dbContext
             .Set<CareConditionDbEntity>()
             .AsNoTracking()
+            .Select(x => new { x.ConditionId, x.ConditionName })
+            .Distinct()
+            .OrderBy(x => x.ConditionId)
+            .ThenBy(x => x.ConditionName)
             .Select(x => new FilterOptionsDto(
                 Label: x.ConditionName,
                 Value: x.ConditionId.ToString()))
-            .Distinct()
-            .OrderBy(x => x.Value)
             .ToListAsync(cancellationToken);
     }
 
@@ -58,11 +64,13 @@ public sealed class MedicalCareOptionsProvider(
             .Set<CareFormDbEntity>()
             .AsNoTracking()
             .Where(x => x.CareFormName != null)
+            .Select(x => new { x.CareFormId, x.CareFormName })
+            .Distinct()
+            .OrderBy(x => x.CareFormId)
+            .ThenBy(x => x.CareFormName)
             .Select(x => new FilterOptionsDto(
                 Label: x.CareFormName!,
                 Value: x.CareFormId.ToString()))
-            .Distinct()
-            .OrderBy(x => x.Value)
             .ToListAsync(cancellationToken);
     }
 
@@ -73,11 +81,13 @@ public sealed class MedicalCareOptionsProvider(
             .Set<DiagnosticMethodDbEntity>()
             .AsNoTracking()
             .Where(x => x.DiagnosticMethodName != null)
+            .Select(x => new { x.DiagnosticMethodId, x.DiagnosticMethodName })
+            .Distinct()
+            .OrderBy(x => x.DiagnosticMethodId)
+            .ThenBy(x => x.DiagnosticMethodName)
             .Select(x => new FilterOptionsDto(
                 Label: x.DiagnosticMethodName!,
                 Value: x.DiagnosticMethodId.ToString()))
-            .Distinct()
-            .OrderBy(x => x.Value)
             .ToListAsync(cancellationToken);
     }
 
@@ -129,11 +139,19 @@ public sealed class MedicalCareOptionsProvider(
                 dbContext.Set<CareConditionDbEntity>(),
                 outcome => outcome.CareConditionId,
                 condition => condition.Uid,
-                (outcome, condition) => new FilterOptionsDto(
-                    Label: $"{outcome.HospitalizationOutcomeName} ({condition.ConditionName})",
-                    Value: outcome.HospitalizationOutcomeId.ToString()))
+                (outcome, condition) => new
+                {
+                    outcome.HospitalizationOutcomeName,
+                    outcome.HospitalizationOutcomeId,
+                    condition.ConditionName
+                })
             .Distinct()
-            .OrderBy(x => x.Value)
+            .OrderBy(x => x.HospitalizationOutcomeId)
+            .ThenBy(x => x.HospitalizationOutcomeName)
+            .ThenBy(x => x.ConditionName)
+            .Select(x => new FilterOptionsDto(
+                Label: $"{x.HospitalizationOutcomeName} ({x.ConditionName})",
+                Value: x.HospitalizationOutcomeId.ToString()))
             .ToListAsync(cancellationToken);
     }
 
@@ -143,11 +161,12 @@ public sealed class MedicalCareOptionsProvider(
         return await dbContext
             .Set<MedicalCareTypeDbEntity>()
             .AsNoTracking()
+            .Distinct()
+            .OrderBy(x => x.Uid)
+            .ThenBy(x => x.MedicalCareName)
             .Select(x => new FilterOptionsDto(
                 Label: x.MedicalCareName,
                 Value: x.Uid.ToString()))
-            .Distinct()
-            .OrderBy(x => x.Value)
             .ToListAsync(cancellationToken);
     }
 
@@ -157,13 +176,21 @@ public sealed class MedicalCareOptionsProvider(
         return await dbContext
             .Set<PhysicianSpecialtyDbEntity>()
             .AsNoTracking()
+            .Select(x => new
+            {
+                x.SpecialityPostname,
+                x.SpecialityName,
+                x.SpecialityId
+            })
+            .Distinct()
+            .OrderBy(x => x.SpecialityId)
+            .ThenBy(x => x.SpecialityName)
+            .ThenBy(x => x.SpecialityPostname)
             .Select(x => new FilterOptionsDto(
                 Label: x.SpecialityPostname == null || x.SpecialityPostname == string.Empty
                     ? x.SpecialityName
                     : $"{x.SpecialityName}" + " " + $"({x.SpecialityPostname})",
                 Value: x.SpecialityId))
-            .Distinct()
-            .OrderBy(x => x.Value)
             .ToListAsync(cancellationToken);
     }
 
@@ -174,11 +201,13 @@ public sealed class MedicalCareOptionsProvider(
             .Set<ReferralReasonDbEntity>()
             .AsNoTracking()
             .Where(x => x.ReferralReasonName != null)
+            .Select(x => new { x.ReferralReasonId, x.ReferralReasonName })
+            .Distinct()
+            .OrderBy(x => x.ReferralReasonId)
+            .ThenBy(x => x.ReferralReasonName)
             .Select(x => new FilterOptionsDto(
                 Label: x.ReferralReasonName!,
                 Value: x.ReferralReasonId.ToString()))
-            .Distinct()
-            .OrderBy(x => x.Value)
             .ToListAsync(cancellationToken);
     }
 
@@ -189,11 +218,13 @@ public sealed class MedicalCareOptionsProvider(
             .Set<ScreeningResultDbEntity>()
             .AsNoTracking()
             .Where(x => x.ScreeningResultName != null)
+            .Select(x => new { x.ScreeningResultId, x.ScreeningResultName })
+            .Distinct()
+            .OrderBy(x => x.ScreeningResultId)
+            .ThenBy(x => x.ScreeningResultName)
             .Select(x => new FilterOptionsDto(
                 Label: x.ScreeningResultName!,
                 Value: x.ScreeningResultId))
-            .Distinct()
-            .OrderBy(x => x.Value)
             .ToListAsync(cancellationToken);
     }
 

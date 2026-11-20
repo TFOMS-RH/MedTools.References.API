@@ -36,11 +36,13 @@ public sealed class DiseaseOptionsProvider(
             .Set<DiseaseCharacterDbEntity>()
             .AsNoTracking()
             .Where(x => x.CharacterName != null)
+            .Select(x => new { x.CharacterId, x.CharacterName })
+            .Distinct()
+            .OrderBy(x => x.CharacterId)
+            .ThenBy(x => x.CharacterName)
             .Select(x => new FilterOptionsDto(
                 Label: x.CharacterName!,
                 Value: x.CharacterId.ToString()))
-            .Distinct()
-            .OrderBy(x => x.Value)
             .ToListAsync(cancellationToken);
     }
 
@@ -50,11 +52,13 @@ public sealed class DiseaseOptionsProvider(
         return await dbContext
             .Set<DiseaseOutcomeDbEntity>()
             .AsNoTracking()
+            .Select(x => new { x.OutcomeId, x.OutcomeName })
+            .Distinct()
+            .OrderBy(x => x.OutcomeId)
+            .ThenBy(x => x.OutcomeName)
             .Select(x => new FilterOptionsDto(
                 Label: x.OutcomeName,
                 Value: x.OutcomeId.ToString()))
-            .Distinct()
-            .OrderBy(x => x.Value)
             .ToListAsync(cancellationToken);
     }
 
@@ -68,11 +72,13 @@ public sealed class DiseaseOptionsProvider(
                 x.StartingDiseasePrefix != null &&
                 x.EndingDiseasePrefix != null &&
                 x.ClassName != "Нет")
-            .Select(x => new FilterOptionsDto(
-                Label: $"{x.StartingDiseasePrefix!}..{x.EndingDiseasePrefix!} — {x.ClassName!}",
-                Value: x.Uid.ToString()))
             .Distinct()
-            .OrderBy(x => x.Value)
+            .OrderBy(x => x.StartingDiseasePrefix)
+            .ThenBy(x => x.EndingDiseasePrefix)
+            .ThenBy(x => x.ClassName)
+            .Select(x => new FilterOptionsDto(
+                Label: $"{x.StartingDiseasePrefix!}..{x.EndingDiseasePrefix!} : {x.ClassName!}",
+                Value: x.Uid.ToString()))
             .ToListAsync(cancellationToken);
     }
 
@@ -85,11 +91,13 @@ public sealed class DiseaseOptionsProvider(
             .Where(x => x.SubClassName != null &&
                 x.StartingDiseasePrefix != null &&
                 x.EndingDiseasePrefix != null)
-            .Select(x => new FilterOptionsDto(
-                Label: $"{x.StartingDiseasePrefix}..{x.EndingDiseasePrefix} — {x.SubClassName}",
-                Value: x.Uid.ToString()))
             .Distinct()
-            .OrderBy(x => x.Value)
+            .OrderBy(x => x.StartingDiseasePrefix)
+            .ThenBy(x => x.EndingDiseasePrefix)
+            .ThenBy(x => x.SubClassName)
+            .Select(x => new FilterOptionsDto(
+                Label: $"{x.StartingDiseasePrefix}..{x.EndingDiseasePrefix} : {x.SubClassName}",
+                Value: x.Uid.ToString()))
             .ToListAsync(cancellationToken);
     }
 

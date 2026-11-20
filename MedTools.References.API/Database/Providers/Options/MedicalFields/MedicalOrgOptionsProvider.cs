@@ -1,7 +1,8 @@
-﻿using MedTools.References.API.Common.Constants;
-using MedTools.References.API.Common.Models.Responces;
+﻿using Microsoft.EntityFrameworkCore;
+
+using MedTools.References.API.Common.Constants;
 using MedTools.References.API.Database.Entities;
-using Microsoft.EntityFrameworkCore;
+using MedTools.References.API.Common.Models.Responces;
 
 namespace MedTools.References.API.Database.Providers.Options.MedicalFields;
 
@@ -54,11 +55,13 @@ public sealed class MedicalOrgOptionsProvider(
         return await dbContext
             .Set<VisitPlaceDbEntity>()
             .AsNoTracking()
+            .Select(x => new { x.VisitPlaceId, x.VisitPlaceName })
+            .Distinct()
+            .OrderBy(x => x.VisitPlaceId)
+            .ThenBy(x => x.VisitPlaceName)
             .Select(x => new FilterOptionsDto(
                 Label: x.VisitPlaceName,
                 Value: x.VisitPlaceId))
-            .Distinct()
-            .OrderBy(x => x.Value)
             .ToListAsync(cancellationToken);
     }
 
@@ -69,11 +72,13 @@ public sealed class MedicalOrgOptionsProvider(
             .Set<VisitPurposeDbEntity>()
             .AsNoTracking()
             .Where(x => x.VisitPurposeName != null)
+            .Select(x => new { x.VisitPurposeId, x.VisitPurposeName })
+            .Distinct()
+            .OrderBy(x => x.VisitPurposeId)
+            .ThenBy(x => x.VisitPurposeName)
             .Select(x => new FilterOptionsDto(
                 Label: x.VisitPurposeName!,
                 Value: x.VisitPurposeId))
-            .Distinct()
-            .OrderBy(x => x.Value)
             .ToListAsync(cancellationToken);
     }
 

@@ -36,11 +36,13 @@ public sealed class PaymentOptionsProvider(
             .Set<ComplexityCoefficientDbEntity>()
             .AsNoTracking()
             .Where(x => x.ComplexityCoefficientName != null)
+            .Select(x => new { x.ComplexityCoefficientId, x.ComplexityCoefficientName })
+            .Distinct()
+            .OrderBy(x => x.ComplexityCoefficientId)
+            .ThenBy(x => x.ComplexityCoefficientName)
             .Select(x => new FilterOptionsDto(
                 Label: x.ComplexityCoefficientName!,
                 Value: x.ComplexityCoefficientId))
-            .Distinct()
-            .OrderBy(x => x.Value)
             .ToListAsync(cancellationToken);
     }
 
@@ -51,11 +53,13 @@ public sealed class PaymentOptionsProvider(
             .Set<ControlTypeCodeDbEntity>()
             .AsNoTracking()
             .Where(x => x.ControlTypeCodeName != null)
+            .Select(x => new { x.ControlTypeCodeId, x.ControlTypeCodeName })
+            .Distinct()
+            .OrderBy(x => x.ControlTypeCodeId)
+            .ThenBy(x => x.ControlTypeCodeName)
             .Select(x => new FilterOptionsDto(
                 Label: x.ControlTypeCodeName!,
                 Value: x.ControlTypeCodeId))
-            .Distinct()
-            .OrderBy(x => x.Value)
             .ToListAsync(cancellationToken);
     }
 
@@ -65,11 +69,12 @@ public sealed class PaymentOptionsProvider(
         return await dbContext
             .Set<PaymentMethodDbEntity>()
             .AsNoTracking()
+            .Distinct()
+            .OrderBy(x => x.Uid)
+            .ThenBy(x => x.PaymentMethodName)
             .Select(x => new FilterOptionsDto(
                 Label: x.PaymentMethodName,
                 Value: x.Uid.ToString()))
-            .Distinct()
-            .OrderBy(x => x.Value)
             .ToListAsync(cancellationToken);
     }
 
@@ -100,11 +105,13 @@ public sealed class PaymentOptionsProvider(
             .Set<InterruptedCasePaymentReasonDbEntity>()
             .AsNoTracking()
             .Where(x => x.InterruptedCasePaymentReasonName != null)
+            .Select(x => new { x.InterruptedCasePaymentReasonId, x.InterruptedCasePaymentReasonName })
+            .Distinct()
+            .OrderBy(x => x.InterruptedCasePaymentReasonId)
+            .ThenBy(x => x.InterruptedCasePaymentReasonName)
             .Select(x => new FilterOptionsDto(
                 Label: x.InterruptedCasePaymentReasonName,
                 Value: x.InterruptedCasePaymentReasonId))
-            .Distinct()
-            .OrderBy(x => x.Value)
             .ToListAsync(cancellationToken);
     }
 }

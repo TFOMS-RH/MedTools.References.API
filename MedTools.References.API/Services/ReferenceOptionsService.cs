@@ -21,171 +21,171 @@ public sealed class ReferenceOptionsService(
         {
             ReferenceCodes.MedicalOrgs => await medicalOrganizationOptionsProvider
                 .GetMedicalOrgOptionsAsync(
-                    cancellationToken,
-                    searchString ?? ""),
+                    searchString ?? string.Empty,
+                    cancellationToken),
 
             ReferenceCodes.InsuranceOrgs => await medicalOrganizationOptionsProvider
                 .GetInsuranceOrgOptionsAsync(
-                    cancellationToken,
-                    searchString ?? ""),
+                    searchString ?? string.Empty,
+                    cancellationToken),
 
             ReferenceCodes.PolicyTypes => await documentReferenceDataProvider
                 .GetInsurancePolicyTypeOptionsAsync(
-                    cancellationToken: cancellationToken),
+                    cancellationToken),
 
             ReferenceCodes.MedicalCareProfiles => await medicalCareOptionsProvider
                 .GetMedicalCareProlileOptionsAsync(
-                    cancellationToken: cancellationToken),
+                    cancellationToken),
 
             ReferenceCodes.BedProfiles => await medicalCareOptionsProvider
                 .GetBedProfileOptionsAsync(
-                    cancellationToken: cancellationToken),
+                    cancellationToken),
 
             ReferenceCodes.VisitPlaces => await medicalOrganizationOptionsProvider
                 .GetVisitPlaceOptionsAsync(
-                    cancellationToken: cancellationToken),
+                    cancellationToken),
 
             ReferenceCodes.VisitPurposes => await medicalOrganizationOptionsProvider
                 .GetVisitPurposeOptionsAsync(
-                    cancellationToken: cancellationToken),
+                    cancellationToken),
 
             ReferenceCodes.DiseaseCharacters => await diseaseOptionsProvider
                 .GetDiseaseCharacterOptionsAsync(
-                    cancellationToken: cancellationToken),
+                    cancellationToken),
 
             ReferenceCodes.PhysicianSpecialities => await medicalCareOptionsProvider
                 .GetPhysicianSpecialtyOptionsAsync(
-                    cancellationToken: cancellationToken),
+                    cancellationToken),
 
             ReferenceCodes.MedicalCareConditions => await medicalCareOptionsProvider
                 .GetCareConditionOptionsAsync(
-                    cancellationToken: cancellationToken),
+                    cancellationToken),
 
             ReferenceCodes.MedicalCareTypes => await medicalCareOptionsProvider
                 .GetMedicalCareTypeOptionsAsync(
-                    cancellationToken: cancellationToken),
+                    cancellationToken),
 
             ReferenceCodes.MedicalCareForms => await medicalCareOptionsProvider
                 .GetCareFormOptionsAsync(
-                    cancellationToken: cancellationToken),
+                    cancellationToken),
 
             ReferenceCodes.DiseaseOutcomes => await diseaseOptionsProvider
                 .GetDiseaseOutcomeOptionsAsync(
-                    cancellationToken: cancellationToken),
+                    cancellationToken),
 
             ReferenceCodes.ScreeningResults => await medicalCareOptionsProvider
                 .GetScreeningResultOptionsAsync(
-                    cancellationToken: cancellationToken),
+                    cancellationToken),
 
             ReferenceCodes.HospitalizationOutcomes => await medicalCareOptionsProvider
                 .GetHospitalizationOutcomeOptionsAsync(
-                    cancellationToken: cancellationToken),
+                    cancellationToken),
 
             ReferenceCodes.PaymentMethods => await paymentOptionsProvider
                 .GetPaymentMethodOptionsAsync(
-                    cancellationToken: cancellationToken),
+                    cancellationToken),
 
             ReferenceCodes.ReferralReasons => await medicalCareOptionsProvider
                 .GetReferralReasonOptionsAsync(
-                    cancellationToken: cancellationToken),
+                    cancellationToken),
 
             ReferenceCodes.DiseaseStages => await diseaseOptionsProvider
                 .GetDiseaseStageOptionsAsync(
                     searchString ?? string.Empty,
-                    cancellationToken: cancellationToken),
+                    cancellationToken),
 
             ReferenceCodes.OncologyServiceTypes => await medicalServiceOptionsProvider
                 .GetOncologyServiceTypeOptionsAsync(
-                    cancellationToken: cancellationToken),
+                    cancellationToken),
 
             ReferenceCodes.SurgicalTreatmentTypes => await medicalServiceOptionsProvider
                 .GetSurgicalTreatmentTypeOptionsAsync(
-                    cancellationToken: cancellationToken),
+                    cancellationToken),
 
             ReferenceCodes.RadioTherapyTypes => await medicalServiceOptionsProvider
                 .GetRadioTherapyTypeOptionsAsync(
-                    cancellationToken: cancellationToken),
+                    cancellationToken),
 
             ReferenceCodes.DrugTherapyLines => await medicalServiceOptionsProvider
                 .GetDrugTherapyLineOptionsAsync(
-                    cancellationToken: cancellationToken),
+                    cancellationToken),
 
             ReferenceCodes.DrugTherapyCycles => await medicalServiceOptionsProvider
                 .GetDrugTherapyCycleOptionsAsync(
-                    cancellationToken: cancellationToken),
+                    cancellationToken),
 
             ReferenceCodes.DrugIdentifiers => await medicalServiceOptionsProvider
                 .GetDrugIdentifierOptionsAsync(
                     searchString ?? string.Empty,
-                    cancellationToken: cancellationToken),
+                    cancellationToken),
 
             ReferenceCodes.TherapyRegimens => await medicalServiceOptionsProvider
                 .GetTherapyRegimenOptionsAsync(
                     searchString ?? string.Empty,
-                    cancellationToken: cancellationToken),
+                    cancellationToken),
 
             ReferenceCodes.DiagnosticMethods => await medicalCareOptionsProvider
                 .GetDiagnosticMethodOptionsAsync(
-                    cancellationToken: cancellationToken),
+                    cancellationToken),
 
             ReferenceCodes.MedicalServices => await medicalServiceOptionsProvider
                 .GetMedicalServiceOptionsAsync(
                     searchString ?? string.Empty,
-                    cancellationToken: cancellationToken),
+                    cancellationToken),
 
             ReferenceCodes.ReferralTypes => await medicalServiceOptionsProvider
                 .GetReferralTypeOptionsAsync(
-                    cancellationToken: cancellationToken),
+                    cancellationToken),
 
             ReferenceCodes.ClinicalGroupNumbers => await paymentOptionsProvider
                 .GetClinicalGroupOptionsAsync(
                     searchString ?? string.Empty,
-                    cancellationToken: cancellationToken),
+                    cancellationToken),
 
             ReferenceCodes.InterruptedCasePaymentReasons => await paymentOptionsProvider
                 .GetInterruptedCasePaymentReasonOptionsAsync(
-                    cancellationToken: cancellationToken),
+                    cancellationToken),
 
             ReferenceCodes.ComplexityCoefficientNumbers => await paymentOptionsProvider
                 .GetComplexityCoefficientOptionsAsync(
-                    cancellationToken: cancellationToken),
+                    cancellationToken),
 
             ReferenceCodes.HighTechCareTypes => await medicalCareOptionsProvider
                 .GetHighTechCareTypeOptionsAsync(
                     searchString: searchString ?? string.Empty,
-                    cancellationToken: cancellationToken),
+                    cancellationToken),
 
             ReferenceCodes.HighTechCareMethods => await medicalCareOptionsProvider
                 .GetHighTechCareMethodOptionsAsync(
                     searchString: searchString ?? string.Empty,
-                    cancellationToken: cancellationToken),
+                    cancellationToken),
 
             ReferenceCodes.ProvidedServices => await medicalServiceOptionsProvider
                 .GetProvidedServiceOptionsAsync(
                     searchString: searchString ?? string.Empty,
-                    cancellationToken: cancellationToken),
+                    cancellationToken),
 
             ReferenceCodes.ControlTypeCodes => await paymentOptionsProvider
                 .GetControlTypeCodeOptionsAsync(
-                    cancellationToken: cancellationToken),
+                    cancellationToken),
 
             ReferenceCodes.RefusalReasonCodes => await paymentOptionsProvider
                 .GetRefusalReasonCodeOptionsAsync(
                     searchString: searchString ?? string.Empty,
-                    cancellationToken: cancellationToken),
+                    cancellationToken),
 
             ReferenceCodes.Diseases => await diseaseOptionsProvider
                 .GetDiseaseOptionsAsync(
                     searchString: searchString ?? string.Empty,
-                    cancellationToken: cancellationToken),
+                    cancellationToken),
 
             ReferenceCodes.DiseaseClasses => await diseaseOptionsProvider
                 .GetDiseaseClassOptionsAsync(
-                    cancellationToken: cancellationToken),
+                    cancellationToken),
 
             ReferenceCodes.DiseaseSubClasses => await diseaseOptionsProvider
                 .GetDiseaseSubClassOptionsAsync(
-                    cancellationToken: cancellationToken),
+                    cancellationToken),
 
             _ => throw new Exception(),
         };

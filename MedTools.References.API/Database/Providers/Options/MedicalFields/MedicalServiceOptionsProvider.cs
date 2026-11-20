@@ -1,9 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
+using MedTools.References.API.Common.Constants;
 using MedTools.References.API.Database.Entities;
 using MedTools.References.API.Common.Models.Responces;
 
-namespace MedTools.References.API.Database.Providers.Options;
+namespace MedTools.References.API.Database.Providers.Options.MedicalFields;
 
 public sealed class MedicalServiceOptionsProvider(
     MedicalReferenceDbContext dbContext)
@@ -15,15 +16,15 @@ public sealed class MedicalServiceOptionsProvider(
         return await dbContext
             .Set<DrugIdentifierDbEntity>()
             .AsNoTracking()
-            .Where(x => x.DrugIdentifierId != null
-                && x.DrugIdentifierName != null
-                && (x.DrugIdentifierId.Contains(searchString)))
+            .Where(x => x.DrugIdentifierId != null &&
+                x.DrugIdentifierId.Contains(searchString))
+            .Select(x => new { x.DrugIdentifierId })
+            .Distinct()
+            .OrderBy(x => x.DrugIdentifierId)
+            .Take(OptionConstants.MaxFilterOptionsCount)
             .Select(x => new FilterOptionsDto(
                 Label: x.DrugIdentifierId!,
                 Value: x.DrugIdentifierId!))
-            .Distinct()
-            .OrderBy(x => x.Value)
-            .Take(30)
             .ToListAsync(cancellationToken);
     }
 
@@ -64,14 +65,17 @@ public sealed class MedicalServiceOptionsProvider(
         return await dbContext
             .Set<MedicalServiceDbEntity>()
             .AsNoTracking()
-            .Where(x => x.ServiceName != null
-                && (x.ServiceName.Contains(searchString) || x.ServiceCode.Contains(searchString)))
-            .Select(x => new FilterOptionsDto(
-                Label: $"{x.ServiceCode} — {x.ServiceName}",
-                Value: x.ServiceId.ToString()))
+            .Where(x => x.ServiceName != null &&
+                (x.ServiceName.Contains(searchString) ||
+                x.ServiceCode.Contains(searchString)))
+            .Select(x => new { x.ServiceCode, x.ServiceName })
             .Distinct()
-            .OrderBy(x => x.Value)
-            .Take(30)
+            .OrderBy(x => x.ServiceCode)
+            .ThenBy(x => x.ServiceName)
+            .Take(OptionConstants.MaxFilterOptionsCount)
+            .Select(x => new FilterOptionsDto(
+                Label: $"{x.ServiceCode} : {x.ServiceName}",
+                Value: x.ServiceCode))
             .ToListAsync(cancellationToken);
     }
 
@@ -97,15 +101,18 @@ public sealed class MedicalServiceOptionsProvider(
         return await dbContext
             .Set<ProvidedServiceDbEntity>()
             .AsNoTracking()
-            .Where(x => x.ProvidedServiceId != null
-                && x.ProvidedServiceName != null
-                && (x.ProvidedServiceId.Contains(searchString) || x.ProvidedServiceName.Contains(searchString)))
-            .Select(x => new FilterOptionsDto(
-                Label: $"{x.ProvidedServiceId!} — {x.ProvidedServiceName!}",
-                Value: x.ProvidedServiceId!))
+            .Where(x => x.ProvidedServiceId != null &&
+                x.ProvidedServiceName != null &&
+                (x.ProvidedServiceId.Contains(searchString) ||
+                    x.ProvidedServiceName.Contains(searchString)))
+            .Select(x => new { x.ProvidedServiceId, x.ProvidedServiceName })
             .Distinct()
-            .OrderBy(x => x.Value)
-            .Take(30)
+            .OrderBy(x => x.ProvidedServiceId)
+            .ThenBy(x => x.ProvidedServiceName)
+            .Take(OptionConstants.MaxFilterOptionsCount)
+            .Select(x => new FilterOptionsDto(
+                Label: $"{x.ProvidedServiceId!} : {x.ProvidedServiceName!}",
+                Value: x.ProvidedServiceId!))
             .ToListAsync(cancellationToken);
     }
 
@@ -162,12 +169,13 @@ public sealed class MedicalServiceOptionsProvider(
             .Set<TherapyRegimenDbEntity>()
             .AsNoTracking()
             .Where(x => x.TherapyRegimenId.Contains(searchString))
+            .Select(x => new { x.TherapyRegimenId })
+            .Distinct()
+            .OrderBy(x => x.TherapyRegimenId)
+            .Take(OptionConstants.MaxFilterOptionsCount)
             .Select(x => new FilterOptionsDto(
                 Label: x.TherapyRegimenId,
                 Value: x.TherapyRegimenId))
-            .Distinct()
-            .OrderBy(x => x.Value)
-            .Take(30)
             .ToListAsync(cancellationToken);
     }
 }

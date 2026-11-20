@@ -1,9 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
+using MedTools.References.API.Common.Constants;
 using MedTools.References.API.Database.Entities;
 using MedTools.References.API.Common.Models.Responces;
 
-namespace MedTools.References.API.Database.Providers.Options;
+namespace MedTools.References.API.Database.Providers.Options.MedicalFields;
 
 public sealed class PaymentOptionsProvider(
     MedicalReferenceDbContext dbContext)
@@ -15,14 +16,16 @@ public sealed class PaymentOptionsProvider(
         return await dbContext
             .Set<ClinicalGroupDbEntity>()
             .AsNoTracking()
-            .Where(x => x.ClinicalGroupName != null
-                && x.ClinicalGroupId.Contains(searchString))
-            .Select(x => new FilterOptionsDto(
-                Label: $"{x.ClinicalGroupId} — {x.ClinicalGroupName!}",
-                Value: x.ClinicalGroupId))
+            .Where(x => x.ClinicalGroupName != null &&
+                x.ClinicalGroupId.Contains(searchString))
+            .Select(x => new { x.ClinicalGroupId, x.ClinicalGroupName })
             .Distinct()
-            .OrderBy(x => x.Value)
-            .Take(30)
+            .OrderBy(x => x.ClinicalGroupId)
+            .ThenBy(x => x.ClinicalGroupName)
+            .Take(OptionConstants.MaxFilterOptionsCount)
+            .Select(x => new FilterOptionsDto(
+                Label: $"{x.ClinicalGroupId} : {x.ClinicalGroupName!}",
+                Value: x.ClinicalGroupId))
             .ToListAsync(cancellationToken);
     }
 
@@ -79,12 +82,14 @@ public sealed class PaymentOptionsProvider(
             .AsNoTracking()
             .Where(x => x.RefusalReasonCodeName.Contains(searchString)
                 || x.RefusalReasonCodeId.ToString().StartsWith(searchString))
+            .Select(x => new { x.RefusalReasonCodeId, x.RefusalReasonCodeName })
+            .Distinct()
+            .OrderBy(x => x.RefusalReasonCodeId)
+            .ThenBy(x => x.RefusalReasonCodeName)
+            .Take(OptionConstants.MaxFilterOptionsCount)
             .Select(x => new FilterOptionsDto(
                 Label: $"{x.RefusalReasonCodeId} : основание {x.RefusalReasonCodeName}",
                 Value: x.RefusalReasonCodeId.ToString()))
-            .Distinct()
-            .OrderBy(x => x.Value)
-            .Take(30)
             .ToListAsync(cancellationToken);
     }
 

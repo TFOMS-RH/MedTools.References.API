@@ -12,9 +12,16 @@ public static class ReferenceEndpoints
             .WithTags("References");
 
         group.MapGet(
-                pattern: "/{code:required}/options",
-                handler: GetReferenceOptionsByCodeHandler.HandleAsync)
-            .WithName("GetFilterOptionsByCode");
+                pattern: "/{referenceType:required}/options",
+                handler: GetOptionsQuery.SendAsync)
+            .WithName("GetOptions")
+            .WithDescription("");
+
+        group.MapGet(
+                pattern: "/{referenceType:required}/options/search",
+                handler: SearchOptionsQuery.SendAsync)
+            .WithName("GetSearchOptions")
+            .WithDescription("");
 
         return endpointRouteBuilder;
     }

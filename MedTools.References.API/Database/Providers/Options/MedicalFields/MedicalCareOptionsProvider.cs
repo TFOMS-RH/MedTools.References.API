@@ -1,9 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 
+using MedTools.References.API.Common.Constants;
 using MedTools.References.API.Database.Entities;
 using MedTools.References.API.Common.Models.Responces;
 
-namespace MedTools.References.API.Database.Providers.Options;
+namespace MedTools.References.API.Database.Providers.Options.MedicalFields;
 
 public sealed class MedicalCareOptionsProvider(
     MedicalReferenceDbContext dbContext)
@@ -89,12 +90,14 @@ public sealed class MedicalCareOptionsProvider(
             .Where(x => x.HighTechCareMethodId != null &&
                 (x.HighTechCareMethodId.Contains(searchString) ||
                 x.HighTechCareMethodName.Contains(searchString)))
+            .Select(x => new { x.HighTechCareMethodId, x.HighTechCareMethodName })
+            .Distinct()
+            .OrderBy(x => x.HighTechCareMethodId)
+            .ThenBy(x => x.HighTechCareMethodName)
+            .Take(OptionConstants.MaxFilterOptionsCount)
             .Select(x => new FilterOptionsDto(
                 Label: $"{x.HighTechCareMethodId!} : {x.HighTechCareMethodName}",
                 Value: x.HighTechCareMethodId!))
-            .Distinct()
-            .OrderBy(x => x.Value)
-            .Take(30)
             .ToListAsync(cancellationToken);
     }
 
@@ -107,12 +110,13 @@ public sealed class MedicalCareOptionsProvider(
             .AsNoTracking()
             .Where(x => x.HighTechCareTypeId != null &&
                 x.HighTechCareTypeId.Contains(searchString))
+            .Select(x => new { x.HighTechCareTypeId })
+            .Distinct()
+            .OrderBy(x => x.HighTechCareTypeId)
+            .Take(OptionConstants.MaxFilterOptionsCount)
             .Select(x => new FilterOptionsDto(
                 Label: x.HighTechCareTypeId!,
                 Value: x.HighTechCareTypeId!))
-            .Distinct()
-            .OrderBy(x => x.Value)
-            .Take(30)
             .ToListAsync(cancellationToken);
     }
 

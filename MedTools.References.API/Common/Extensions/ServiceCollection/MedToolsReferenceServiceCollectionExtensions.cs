@@ -7,7 +7,7 @@ public static class MedToolsReferenceServiceCollectionExtensions
     public static IServiceCollection AddMedToolReferenceServices(
         this IServiceCollection services)
     {
-        services.AddScoped<ReferenceOptionsService>();
+        services.AddScoped<MedicalReferenceOptionsService>();
 
         return services;
     }

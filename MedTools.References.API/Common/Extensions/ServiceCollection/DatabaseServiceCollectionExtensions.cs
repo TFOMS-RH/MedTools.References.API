@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 using MedTools.References.API.Database;
 using MedTools.References.API.Common.Models.Options;
+using MedTools.References.API.Database.Providers.Options.MedicalFields;
 using MedTools.References.API.Database.Providers.Options;
 
 namespace MedTools.References.API.Common.Extensions.ServiceCollection;
@@ -55,8 +56,9 @@ public static class DatabaseServiceCollectionExtensions
         services.AddScoped<DiseaseOptionsProvider>();
         services.AddScoped<DocumentOptionsProvider>();
         services.AddScoped<MedicalCareOptionsProvider>();
-        services.AddScoped<MedicalOrganizationOptionsProvider>();
+        services.AddScoped<MedicalOrgOptionsProvider>();
         services.AddScoped<MedicalServiceOptionsProvider>();
         services.AddScoped<PaymentOptionsProvider>();
+        services.AddScoped<MedicalReferenceOptionsProvider>();
     }
 }
